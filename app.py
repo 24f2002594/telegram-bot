@@ -46,6 +46,10 @@ def webhook(token):
     chat_id = message["chat"]["id"]
     user_text = message["text"]
 
+    if user_text.strip().lower() in ("/start", "/help"):
+        send_message(chat_id, "Hi! Send me a data-analysis question and I'll work out the answer.")
+        return jsonify({"ok": True})
+
     with _conv_lock:
         history = _conversations.setdefault(chat_id, [])
         history.append({"role": "user", "content": user_text})
